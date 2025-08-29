@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Legacy Enterprise Solutions | Aerial Drone Services</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Aerial photography, videography, RGB inspections, mapping, thermography, and precision agriculture services." />
+  <meta property="og:title" content="Legacy Enterprise Solutions" />
+  <meta property="og:description" content="Aerial imaging and data—delivered with excellence." />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts & Swiper -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">LEGACY ENTERPRISE SOLUTIONS</div>
+      <nav class="nav">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="btn btn-cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO: Swiper Slider -->
+  <section id="hero" class="hero">
+    <div class="swiper hero-swiper">
+      <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div class="swiper-slide" style="--bg:url('assets/hero-1.jpg')">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h1>AERIAL DATA DELIVERED.<br>EXCELLENCE ACHIEVED.</h1>
+            <p>Commercial drone imaging, inspection, and mapping—reimagined.</p>
+            <a href="#contact" class="btn btn-cta">Request a Quote</a>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="swiper-slide" style="--bg:url('assets/hero-2.jpg')">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h1>SEE MORE. KNOW FASTER.</h1>
+            <p>High-resolution RGB, cinematic video, and actionable reporting.</p>
+            <a href="#services" class="btn">Explore Services</a>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="swiper-slide" style="--bg:url('assets/hero-3.jpg')">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h1>PRECISION FROM ABOVE.</h1>
+            <p>Mapping, thermography, and agriculture workflows—built for results.</p>
+            <a href="#about" class="btn">About Us</a>
+          </div>
+        </div>
+      </div>
+      <!-- Optional pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <main>
+    <!-- SERVICES -->
+    <section id="services" class="section">
+      <div class="container">
+        <h2>Our Service Offerings</h2>
+        <div class="cards">
+          <article class="card">
+            <img src="assets/service-photo.jpg" alt="Aerial Photography & Videography">
+            <h3>Photography & Videography</h3>
+            <p>Cinematic aerial video and crisp stills for marketing, real estate, and documentation.</p>
+          </article>
+          <article class="card">
+            <img src="assets/service-rgb.jpg" alt="RGB Imaging & Inspections">
+            <h3>RGB Imaging & Inspections</h3>
+            <p>High-resolution RGB capture for roofs, utilities, and asset condition assessments.</p>
+          </article>
+          <article class="card">
+            <img src="assets/service-mapping.jpg" alt="Geospatial Mapping">
+            <h3>Geospatial Mapping</h3>
+            <p>Orthomosaics, DSM/DEM, and 3D models with reliable, repeatable accuracy.</p>
+          </article>
+          <article class="card">
+            <img src="assets/service-thermal.jpg" alt="Thermography">
+            <h3>Thermography</h3>
+            <p>Locate heat anomalies in solar arrays, buildings, and mechanical systems.</p>
+          </article>
+          <article class="card">
+            <img src="assets/service-ag.jpg" alt="Agriculture">
+            <h3>Agriculture</h3>
+            <p>Multispectral crop insight and mission planning for smarter field decisions.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section section-alt">
+      <div class="container">
+        <h2>About Us</h2>
+        <p>Legacy Enterprise Solutions, LLC is a Savannah-based UAS provider delivering high-quality aerial imaging and data products to agriculture, industrial, and commercial clients across the Southeastern U.S. FAA Part 107 certified and fully insured.</p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Contact</h2>
+        <form class="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+          <div class="grid">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" required>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-cta">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © 2025 Legacy Enterprise Solutions, LLC — Professionally Piloted. Precision Delivered.
+    </div>
+  </footer>
+
+  <!-- JS: Swiper + Site -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
