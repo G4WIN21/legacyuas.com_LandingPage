@@ -15,11 +15,14 @@
   <!-- Fonts & Swiper -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href=https://use.typekit.net/mjh5dyh.css>
+  <!--
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
+-->
   <!-- Styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="styles.css">
+  <!--***_________________________________________________________________________________________________________________________________________________***-->
 </head>
 <body>
   <header class="site-header">
@@ -148,5 +151,15 @@
   <!-- JS: Swiper + Site -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    const hero = new Swiper('.hero-swiper', {
+      effect: 'fade',
+      loop: true,
+      speed: 900,
+      autoplay: { delay: 5000, disableOnInteraction: false },
+      pagination: { el: '.swiper-pagination', clickable: true }
+    });
+  </script>
 </body>
 </html>
