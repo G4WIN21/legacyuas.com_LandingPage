@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href=LES_Icon.png>
   <title>Legacy Enterprise Solutions | Aerial Drone Services</title>
+  <icon rel="icon" href="LES_Icon.png" />
 
   <!-- SEO -->
   <meta name="description" content="Aerial photography, videography, RGB inspections, mapping, thermography, and precision agriculture services." />
@@ -15,16 +15,16 @@
   <!-- Fonts & Swiper -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href=https://use.typekit.net/mjh5dyh.css>
-  <!--
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
--->
-  <!-- Styles -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
-  <!--***_________________________________________________________________________________________________________________________________________________***-->
 </head>
 <body>
+  <!-- Real-time sky canvas (behind everything) -->
+  <canvas id="skyCanvas" aria-hidden="true"></canvas>
+
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">LEGACY ENTERPRISE SOLUTIONS</div>
@@ -68,8 +68,11 @@
           </div>
         </div>
       </div>
-      <!-- Optional pagination -->
+      <!-- Pagination (dots) -->
       <div class="swiper-pagination"></div>
+      <!-- Optional Arrows -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
     </div>
   </section>
 
@@ -103,7 +106,6 @@
             <img src="assets/service-ag.jpg" alt="Agriculture">
             <h3>Agriculture</h3>
             <p>Multispectral crop insight and mission planning for smarter field decisions.</p>
-            <p>Agrochemical spray & seeding applications for more efficient and effective remediation and cover cropping.</p>
           </article>
         </div>
       </div>
@@ -148,18 +150,142 @@
     </div>
   </footer>
 
-  <!-- JS: Swiper + Site -->
+  <!-- JS: Swiper + SunCalc + Sky + Site -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/suncalc@1.9.0/suncalc.js"></script>
+
   <script>
-    const hero = new Swiper('.hero-swiper', {
-      effect: 'fade',
-      loop: true,
-      speed: 900,
-      autoplay: { delay: 5000, disableOnInteraction: false },
-      pagination: { el: '.swiper-pagination', clickable: true }
+  // ===== Real-time sky background =====
+  (() => {
+    const canvas = document.getElementById('skyCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    // Fallback: Savannah, GA
+    let lat = 32.0809, lon = -81.0912;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(p => {
+        lat = p.coords.latitude; lon = p.coords.longitude;
+      }, () => {});
+    }
+
+    let dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    function resize() {
+      const w = window.innerWidth, h = window.innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      toPx();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const STAR_COUNT = window.innerWidth >= 900 ? 800 : 400;
+    const stars = Array.from({length: STAR_COUNT}).map(() => ({
+      x: Math.random(),
+      y: Math.random() * 0.7,
+      r: Math.random() < 0.85 ? 1 : 1.5,
+      a: Math.random() * 0.7 + 0.3,
+      t: Math.random() * 2 + 0.5,
+      phi: Math.random() * Math.PI * 2
+    }));
+    function toPx() {
+      for (const s of stars) {
+        s._x = s.x * canvas.width;
+        s._y = s.y * canvas.height;
+      }
+    }
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    const mix3 = (a,b,t) => [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t];
+    const rgb = ([r,g,b]) => `rgb(${r|0},${g|0},${b|0})`;
+    const smooth = (e0,e1,x) => { const t = clamp((x - e0)/(e1 - e0), 0, 1); return t*t*(3-2*t); };
+
+    function drawStars(night) {
+      const t = Date.now()/1000;
+      for (const s of stars) {
+        const tw = 0.5 + 0.5 * Math.sin(t * s.t + s.phi);
+        ctx.fillStyle = `rgba(255,255,255,${(night * s.a * tw).toFixed(3)})`;
+        ctx.fillRect(s._x, s._y, s.r * dpr, s.r * dpr);
+      }
+    }
+    function drawSun(x,y,r, strength) {
+      const g = ctx.createRadialGradient(x,y,0, x,y,r);
+      g.addColorStop(0, `rgba(255,255,220,${0.95*strength})`);
+      g.addColorStop(0.4, `rgba(255,200,80,${0.7*strength})`);
+      g.addColorStop(1, 'rgba(255,140,40,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    }
+    function drawMoon(x,y,r, bright) {
+      const g = ctx.createRadialGradient(x,y,0, x,y,r);
+      g.addColorStop(0, `rgba(255,255,255,${0.6*bright})`);
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    }
+
+    function loop() {
+      const now = new Date();
+      const w = canvas.width, h = canvas.height;
+
+      let dayT = 0, sunX = null, sunY = null;
+      if (window.SunCalc) {
+        const sun = SunCalc.getPosition(now, lat, lon);
+        const alt = sun.altitude;
+        const az  = sun.azimuth + Math.PI;
+        dayT = clamp((alt + 0.15) / 1.2, 0, 1);
+
+        const horizonY = h * 0.65;
+        const r = Math.cos(alt) * (h * 0.45);
+        sunX = w/2 + r * Math.sin(az);
+        sunY = horizonY - (Math.sin(alt) * h * 0.5);
+      } else {
+        const hrs = now.getHours() + now.getMinutes()/60;
+        dayT = clamp(Math.sin((hrs-6)/12*Math.PI), 0, 1);
+      }
+
+      const dayTop = [20,60,130],   dayBot = [90,170,255];
+      const duskTop = [120,40,90],  duskBot = [250,120,60];
+      const nightTop= [8,10,20],    nightBot= [18,20,35];
+
+      const t1 = smooth(0,0.25,dayT), t2 = smooth(0.25,0.75,dayT);
+      const top = mix3(mix3(nightTop, duskTop, t1), dayTop, t2);
+      const bot = mix3(mix3(nightBot, duskBot, t1), dayBot, t2);
+
+      const g = ctx.createLinearGradient(0,0,0,h);
+      g.addColorStop(0, rgb(top));
+      g.addColorStop(1, rgb(bot));
+      ctx.fillStyle = g;
+      ctx.fillRect(0,0,w,h);
+
+      const night = 1 - dayT;
+      if (night > 0.05) drawStars(night);
+
+      if (window.SunCalc) {
+        if (sunX !== null && dayT > 0.02) drawSun(sunX, sunY, 60*dpr, dayT);
+
+        const mpos = SunCalc.getMoonPosition(now, lat, lon);
+        const maz  = mpos.azimuth + Math.PI;
+        const malt = mpos.altitude;
+        const r2 = Math.cos(malt) * (h * 0.45);
+        const mx = w/2 + r2 * Math.sin(maz);
+        const my = h*0.65 - (Math.sin(malt) * h * 0.5);
+        const illum = SunCalc.getMoonIllumination(now).phase;
+        const bright = 1 - Math.abs(illum - 0.5) * 2;
+        if (malt > -0.15) drawMoon(mx, my, 40*dpr, bright * (night+0.2));
+      }
+
+      setTimeout(() => requestAnimationFrame(loop), 1000/30);
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) requestAnimationFrame(loop);
     });
+    requestAnimationFrame(loop);
+  })();
   </script>
+
+  <script src="script.js"></script>
 </body>
 </html>

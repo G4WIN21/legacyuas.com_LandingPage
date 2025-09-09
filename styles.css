@@ -1,4 +1,4 @@
-/* ========== CSS RESET & THEME ========== */
+/* ========== THEME (dark, slider + sky) ========== */
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 :root{
@@ -16,7 +16,21 @@ body{
   line-height:1.6;
 }
 
-/* ========== LAYOUT ========== */
+/* Real-time sky canvas behind everything */
+#skyCanvas{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+}
+
+/* Ensure site content sits above the sky */
+.site-header, .hero, main, footer { position: relative; z-index: 1; }
+
+/* Layout */
 .container{ width: min(var(--container), 92%); margin: 0 auto; }
 
 .site-header{
@@ -29,31 +43,34 @@ body{
   padding: 14px 0;
 }
 .brand{ font-family:'Montserrat', sans-serif; font-weight:700; letter-spacing:.06em; color:#fff; }
-.nav a{
-  color:#fff; text-decoration:none; margin-left:18px; font-weight:600;
-}
+.nav a{ color:#fff; text-decoration:none; margin-left:18px; font-weight:600; }
 .btn{ display:inline-block; padding:10px 18px; border-radius:6px; background:#222; color:#fff; text-decoration:none; }
 .btn-cta{ background:var(--accent); }
 
-/* ========== HERO ========== */
+/* ========== HERO (Swiper) ========== */
 .hero{ position:relative; height:100vh; overflow:hidden; }
+.hero .swiper{ width:100%; height:100%; }
+.hero .swiper-wrapper{ height:100%; }
 .hero .swiper-slide{
-  position:relative; width:100%; height:100vh;
+  width:100%; height:100%;
+  position:relative;
   background-image: var(--bg);
   background-position:center; background-size:cover; background-repeat:no-repeat;
-  background-color: linear-gradient(270deg, rgba(125, 17, 17, 0.45), rgba(255, 0, 0, 0.55));
   display:flex; align-items:center; justify-content:center; text-align:center;
 }
 .hero-overlay{
-  position:absolute; inset:0; background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55));
+  position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.55));
 }
 .hero-content{ position:relative; z-index:2; padding:0 20px; }
 .hero h1{ font-family:'Montserrat', sans-serif; color:#fff; font-size: clamp(2rem, 4vw + 1rem, 3.2rem); line-height:1.15; margin:0 0 12px; }
 .hero p{ color:#ccc; font-size: clamp(1rem, 1.2vw + .6rem, 1.25rem); margin:0 0 24px; }
+
+/* Swiper controls */
 .swiper-pagination-bullet{ background:#fff; opacity:.5; }
 .swiper-pagination-bullet-active{ background:var(--accent); opacity:1; }
+.swiper-button-prev, .swiper-button-next{ color:#fff; }
 
-/* ========== SECTIONS ========== */
+/* Sections */
 .section{ padding: 72px 0; }
 .section-alt{ background:#0b0b0b; }
 .section h2{ font-family:'Montserrat', sans-serif; color:#fff; text-align:center; font-size: clamp(1.6rem, 1.8vw + 1rem, 2.2rem); margin:0 0 26px; }
@@ -73,7 +90,7 @@ body{
 .card h3{ color:#fff; font-size:1.15rem; margin:14px 16px 6px; }
 .card p{ color:#ccc; margin: 0 16px 18px; font-size:.98rem; }
 
-/* ========== CONTACT ========== */
+/* Contact */
 .contact-form .grid{
   display:grid; gap:16px; grid-template-columns: 1fr 1fr;
 }
@@ -82,10 +99,9 @@ body{
   width:100%; padding:12px 12px; border-radius:8px; border:1px solid #333; background:#121212; color:#fff;
 }
 .field textarea{ resize:vertical; }
-
 .site-footer{ background:#0b0b0b; color:var(--fg-muted); padding:22px 0; text-align:center; }
 
-/* ========== RESPONSIVE ========== */
+/* Responsive */
 @media (max-width: 980px){
   .cards{ grid-template-columns: repeat(2, 1fr); }
   .contact-form .grid{ grid-template-columns: 1fr; }
@@ -94,7 +110,3 @@ body{
   .nav a{ margin-left:12px; }
   .cards{ grid-template-columns: 1fr; }
 }
-
-/* ========== REVEAL EFFECTS ========== */
-.reveal{ opacity:0; transform: translateY(16px); transition: all .5s ease; }
-.reveal.revealed{ opacity:1; transform: translateY(0); }
