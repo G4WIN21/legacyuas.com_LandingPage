@@ -66,7 +66,7 @@ body{
 
 /* Swiper controls */
 .swiper-pagination-bullet{ background:#fff; opacity:.5; }
-.swiper-pagination-bullet-active{ background:var(--accent); opacity:1; }
+.swiper-pagination-bullet-active{ background:var(--accent); opacity: 0.3;; }
 .swiper-button-prev, .swiper-button-next{ color:#fff; }
 
 /* Sections */
