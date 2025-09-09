@@ -121,3 +121,33 @@ body{
   opacity: 0.6;                      /* tweak 0.4–0.8 */
   z-index: 1;
 }
+/* --- Allow the live sky to show behind the hero slides --- */
+.hero { background: transparent !important; }
+
+.hero .swiper-slide {
+  width: 100%; height: 100%;
+  position: relative;
+  /* IMPORTANT: remove solid bg here so we can draw it on a separate layer */
+  background: transparent !important;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+
+/* Draw slide image on its own layer (fed by inline --bg:url('...')) */
+.hero .swiper-slide::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: var(--bg);
+  background-position: center; background-size: cover; background-repeat: no-repeat;
+  opacity: 0.60;               /* tweak between 0.40 – 0.80 for more/less sky */
+  z-index: 1;
+}
+
+/* Keep overlay + text above the image layer */
+.hero-overlay { position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.55));
+}
+.hero-content { position: relative; z-index: 3; }
+
+/* Make sure the canvas is behind everything; content is above it */
+#skyCanvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.site-header, .hero, main, footer { position: relative; z-index: 1; }
