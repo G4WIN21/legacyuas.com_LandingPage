@@ -71,8 +71,8 @@ body{
 
 /* Sections */
 .section{ padding: 72px 0; }
-.section-alt{ background:#c61919; }
-.section h2{ font-family:'Montserrat', sans-serif; color:#fff; text-align:center; font-size: clamp(1.6rem, 1.8vw + 1rem, 2.2rem); margin:0 0 26px; }
+.section-alt{ background:#8C2724; }
+.section h2{ font-family:'Montserrat', sans-serif; color:#584127; text-align:center; font-size: clamp(1.6rem, 1.8vw + 1rem, 2.2rem); margin:0 0 26px; }
 
 .cards{
   display:grid; gap:22px;
@@ -80,14 +80,14 @@ body{
 }
 .card{
   background:var(--card);
-  border:1px solid rgba(255,255,255,.06);
+  border:3px solid rgba(255,255,255,.04);
   border-radius:12px; overflow:hidden;
-  transition: transform .50s ease, box-shadow .25s ease;
+  transition: transform .50s ease, box-shadow .50s ease;
 }
-.card:hover{ transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,.35); }
-.card img{ width:100%; height:100%; object-fit:fill; display:block; }
-.card h3{ color:#fff; font-size:1.15rem; margin:14px 16px 6px; }
-.card p{ color:#ccc; margin: 0 16px 18px; font-size:.98rem; }
+.card:hover{ transform: translateY(-6px); box-shadow: 4px 12px 32px rgba(0,0,0,.35); }
+.card img{ width:100%; height: 260px; object-fit:contain; display:block; }
+.card h3{ color:#111D25; font-size:1.15rem; margin:14px 16px 6px; }
+.card p{ color:#284254; margin: 0 16px 18px; font-size:.98rem; }
 
 /* Contact */
 .contact-form .grid{
@@ -95,7 +95,7 @@ body{
 }
 .field label{ display:block; font-weight:700; margin-bottom:6px; color:#fff; }
 .field input, .field textarea{
-  width:100%; padding:12px 12px; border-radius:8px; border:1px solid #333; background:#121212; color:#fff;
+  width:100%; padding:12px 12px; border-radius:8px; border:1px solid #333; background:#111D25; color:#fff;
 }
 .field textarea{ resize:vertical; }
 .site-footer{ background:#0b0b0b; color:var(--fg-muted); padding:22px 0; text-align:center; }
