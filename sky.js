@@ -33,7 +33,7 @@
 
   // ---------- Weather state ----------
   const WX = {
-    cloudCover: 10,     // %
+    cloudCover: 7,     // %
     rainRate: 0,        // mm/h
     snowRate: 0,        // mm/h (water equiv)
     tempF: 75,
