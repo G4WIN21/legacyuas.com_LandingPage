@@ -241,6 +241,9 @@
 
       // px/sec baseline cloud speed (tweakable)
       const basePxPerSec = (12 + 48*(WX.windSpeed/25));
+      
+      const CLOUD_SPEED = 0.35; // 35% of current speed
+
 
       for (let i=0;i<CLOUD_MAX;i++){
         const c = clouds[i];
@@ -251,11 +254,11 @@
         c.a += (targetA - c.a) * Math.min(1, dt * 6); // was 0.02/frame
 
         // velocity (px/sec), gentle bob
-        const speed = basePxPerSec * c.z;
+        const speed = basePxPerSec * c.z* CLOUD_SPEED; // px/sec 
         const bob = Math.sin(t*0.25 + c.seed) * (2 * dpr); // small vertical wobble
 
-        c.x += (speed * windX) * dt * 60;           // scale to px/frame at ~60fps
-        c.y += (speed * 0.2 * windY) * dt * 60 + bob * dt; // tiny wobble
+        c.x += (speed * windX) * dt;                  // ✅ proper px/sec
+        c.y += (speed * 0.2 * windY) * dt + bob * dt;
 
         // wrap
         if (c.x < -c.r) c.x = w + c.r;
