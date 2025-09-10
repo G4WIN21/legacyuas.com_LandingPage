@@ -71,7 +71,7 @@ body{
 
 /* Sections */
 .section{ padding: 72px 0; }
-.section-alt{ background:#0b0b0b; }
+.section-alt{ background:#c61919; }
 .section h2{ font-family:'Montserrat', sans-serif; color:#fff; text-align:center; font-size: clamp(1.6rem, 1.8vw + 1rem, 2.2rem); margin:0 0 26px; }
 
 .cards{
