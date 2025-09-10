@@ -2,8 +2,8 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 :root{
-  --bg:#000;
-  --fg:#ddd;
+  --bg:#000 opacity(.5);
+  --fg:#ddd opacity(.9);
   --fg-muted:#aaa;
   --card:#111;
   --accent:#D62828;
@@ -16,7 +16,7 @@ body{
   line-height:1.6;
 }
 
-/* Real-time sky canvas behind everything */
+/* Real-time sky canvas behind everything
 #skyCanvas{
   position: fixed;
   inset: 0;
@@ -25,7 +25,7 @@ body{
   z-index: 0;
   display: block;
   pointer-events: visibleStroke;
-}
+} */
 
 /* Ensure site content sits above the sky */
 .site-header, .hero, main, footer { position: relative; z-index: 1; }
@@ -132,33 +132,20 @@ body{
   display: flex; align-items: center; justify-content: center; text-align: center;
 }
 
-/* Draw slide image on its own layer (fed by inline --bg:url('...')) */
-.hero .swiper-slide::before {
-  content: "";
-  position: absolute; inset: 0;
-  background-image: var(--bg);
-  background-position: center; background-size: cover; background-repeat: no-repeat;
-  opacity: 0.60;               /* tweak between 0.40 – 0.80 for more/less sky */
-  z-index: 1;
-}
-
 /* Keep overlay + text above the image layer */
-.hero-overlay { position: absolute; inset: 0; z-index: 2;
-  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.55));
-}
+.hero-overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.55));}
 .hero-content { position: relative; z-index: 3; }
-
-/* Make sure the canvas is behind everything; content is above it */
-#skyCanvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-.site-header, .hero, main, footer { position: relative; z-index: 1; }
 
 /* Debug: show canvas area 
 #skyCanvas { background: repeating-linear-gradient(45deg, #0f0 0 10px, #070 10px 20px); }
 */
 
-/*Temp Debug: Pull Canvas To The Front So We Can See It*/
+/*Temp Debug: Pull Canvas To The Front So We Can See It
 #skyCanvas.debug {
   z-index: 9999 !important;
   opacity: 0.6 !important;
   background: none !important;
-}
+} */
+
+#skyCanvas{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+.site-header, .hero, main, footer{ position:relative; z-index:1; }
