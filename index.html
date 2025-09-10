@@ -22,124 +22,13 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <!-- JS: Swiper + SunCalc + Sky + Site -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://unpkg.com/suncalc@1.9.0/suncalc.js"></script>
-<script>
-(() => {
-  const canvas = document.getElementById('skyCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
 
-  // Location: try browser, else Savannah
-  let lat = 32.0809, lon = -81.0912;
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(p => {
-      lat = p.coords.latitude; lon = p.coords.longitude;
-    }, () => {});
-  }
 
-  // Size / DPR
-  let dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-  function resize(){
-    const w = innerWidth, h = innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width = Math.floor(w*dpr);
-    canvas.height = Math.floor(h*dpr);
-    canvas.style.width = w+'px';
-    canvas.style.height = h+'px';
-  }
-  addEventListener('resize', resize);
-  resize();
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+<script src="https://unpkg.com/suncalc@1.9.0/suncalc.js" defer></script>
+<script src="sky.js" defer></script>          <!-- ⬅️ your new file -->
+<script src="script.js" defer></script>       <!-- your site’s JS -->
 
-  // Helpers
-  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
-  const mix3 = (A,B,t)=>[A[0]+(B[0]-A[0])*t, A[1]+(B[1]-A[1])*t, A[2]+(B[2]-A[2])*t];
-  const rgb = c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
-  const smooth = (e0,e1,x)=>{ const t=clamp((x-e0)/(e1-e0),0,1); return t*t*(3-2*t); };
-
-  // Stars
-  const STAR_COUNT = innerWidth >= 900 ? 800 : 400;
-  const stars = Array.from({length:STAR_COUNT}).map(()=>({
-    x: Math.random(), y: Math.random()*0.7,
-    r: Math.random()<.85 ? 1 : 1.5, a: Math.random()*.7+.3,
-    t: Math.random()*2+.5, phi: Math.random()*Math.PI*2
-  }));
-  function drawStars(night){
-    const t = Date.now()/1000;
-    for(const s of stars){
-      const tw = 0.5 + 0.5*Math.sin(t*s.t + s.phi);
-      ctx.fillStyle = `rgba(255,255,255,${(night*s.a*tw).toFixed(3)})`;
-      ctx.fillRect(s.x*canvas.width, s.y*canvas.height, s.r*dpr, s.r*dpr);
-    }
-  }
-
-  function drawSun(x,y,r,str){ const g=ctx.createRadialGradient(x,y,0, x,y,r);
-    g.addColorStop(0,`rgba(255,255,220,${0.95*str})`);
-    g.addColorStop(0.4,`rgba(255,200,80,${0.7*str})`);
-    g.addColorStop(1,'rgba(255,140,40,0)'); ctx.fillStyle=g;
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-  }
-  function drawMoon(x,y,r,b){ const g=ctx.createRadialGradient(x,y,0, x,y,r);
-    g.addColorStop(0,`rgba(255,255,255,${0.6*b})`);
-    g.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=g;
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-  }
-
-  function loop(){
-    const now = new Date();
-    const w = canvas.width, h = canvas.height;
-
-    // Day factor + sun position (works even if SunCalc missing)
-    let dayT = 0, sunX=null, sunY=null;
-    if (window.SunCalc) {
-      const sun = SunCalc.getPosition(now, lat, lon);
-      const alt = sun.altitude, az = sun.azimuth + Math.PI;
-      dayT = clamp((alt + 0.15) / 1.2, 0, 1);
-      const horizonY = h*0.65;
-      const r = Math.cos(alt) * (h*0.45);
-      sunX = w/2 + r * Math.sin(az);
-      sunY = horizonY - (Math.sin(alt) * h * 0.5);
-    } else {
-      const hrs = now.getHours() + now.getMinutes()/60;
-      dayT = clamp(Math.sin((hrs-6)/12*Math.PI), 0, 1);
-    }
-
-    // Gradients
-    const dayTop=[20,60,130], dayBot=[90,170,255];
-    const duskTop=[120,40,90], duskBot=[250,120,60];
-    const nightTop=[8,10,20],  nightBot=[18,20,35];
-    const t1=smooth(0,0.25,dayT), t2=smooth(0.25,0.75,dayT);
-    const top = mix3(mix3(nightTop,duskTop,t1), dayTop, t2);
-    const bot = mix3(mix3(nightBot,duskBot,t1), dayBot, t2);
-
-    const g = ctx.createLinearGradient(0,0,0,h);
-    g.addColorStop(0, rgb(top)); g.addColorStop(1, rgb(bot));
-    ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
-
-    const night = 1 - dayT;
-    if (night>0.05) drawStars(night);
-    if (window.SunCalc && dayT>0.02) drawSun(sunX,sunY,60*dpr,dayT);
-
-    if (window.SunCalc){
-      const mpos = SunCalc.getMoonPosition(now, lat, lon);
-      const maz=mpos.azimuth + Math.PI, malt=mpos.altitude;
-      const r2 = Math.cos(malt)*(h*0.45);
-      const mx = w/2 + r2*Math.sin(maz);
-      const my = h*0.65 - (Math.sin(malt)*h*0.5);
-      const illum = SunCalc.getMoonIllumination(now).phase;
-      const bright = 1 - Math.abs(illum - 0.5)*2;
-      if (malt > -0.15) drawMoon(mx,my,40*dpr, bright*(night+0.2));
-    }
-
-    setTimeout(()=>requestAnimationFrame(loop), 1000/30);
-  }
-
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) requestAnimationFrame(loop);
-  });
-  requestAnimationFrame(loop);
-})();
-</script>
 
 <body>
   <!-- Real-time sky canvas (behind everything) -->
@@ -264,13 +153,11 @@
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
       © 2025 Legacy Enterprise Solutions, LLC — Professionally Piloted. Precision Delivered.
     </div>
   </footer>
-
-  <!-- Your site JS -->
-  <script src="script.js" onerror="console.error('script.js failed to load');"></script>
 </body>
 </html>
