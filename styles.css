@@ -2,8 +2,8 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 :root{
-  --bg:#000 opacity(.5);
-  --fg:#ddd opacity(.9);
+  --bg:#000;
+  --fg:#ddd;
   --fg-muted:#aaa;
   --card:#111;
   --accent:#D62828;
