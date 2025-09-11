@@ -85,7 +85,7 @@ body{
   transition: transform .50s ease, box-shadow .50s ease;
 }
 .card:hover{ transform: translateY(-6px); box-shadow: 4px 12px 32px rgba(0,0,0,.35); }
-.card img{ width:100%; height: 260px; object-fit:fill; display:block; }
+.card img{ width:100%; height: 100%; object-fit:fill; display:block; }
 .card h3{ color:#111D25; font-size:1.15rem; margin:14px 16px 6px; }
 .card p{ color:#284254; margin: 0 16px 18px; font-size:.98rem; }
 
