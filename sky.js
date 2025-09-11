@@ -242,7 +242,7 @@
       // px/sec baseline cloud speed (tweakable)
       const basePxPerSec = (12 + 48*(WX.windSpeed/25));
       
-      const CLOUD_SPEED = 0.15; // 15% of current speed
+      const CLOUD_SPEED = 0.20; // 20% of current speed
 
 
       for (let i=0;i<CLOUD_MAX;i++){
